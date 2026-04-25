@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
+import FoodPartnerModel from '../models/food-partner.model.js';
 import jwt from "jsonwebtoken";
-import Env from '../utils/Env.js'
+import { Env } from '../utils/Env.js';
 
 export const registerUser = async(req,res)=>{
         try {
@@ -20,7 +21,7 @@ export const registerUser = async(req,res)=>{
 
 
             // Check User exist
-            const ifUserExist = await User.findOne({email:email});
+            const isUserExist = await User.findOne({email:email});
 
             if(isUserExist){
                 return res.status(400).json(
@@ -33,7 +34,7 @@ export const registerUser = async(req,res)=>{
 
             
             // create user 
-            const user = await userModel.create({
+            const user = await User.create({
                 fullName,
                 email,
                 password
@@ -80,7 +81,7 @@ export const registerUser = async(req,res)=>{
 }
 
 
-export const loginUser = async (res,res)=>{
+export const loginUser = async (req, res)=>{
     try {
         
         // taking fileds from req ki body
@@ -88,7 +89,7 @@ export const loginUser = async (res,res)=>{
 
 
         // finding is the user real 
-        const user = await userModel.findOne({
+        const user = await User.findOne({
             email
         })
 
@@ -180,7 +181,7 @@ export const registerFoodPartner = async (req,res)=>{
 
 
         // check FoodPartner Exist
-        const isAccountAlreadyExists = await foodPartnerModel.findOne({
+        const isAccountAlreadyExists = await FoodPartnerModel.findOne({
             email
         })
 
@@ -193,7 +194,7 @@ export const registerFoodPartner = async (req,res)=>{
         }
 
         // Creating foodPartner
-        const foodPartner = await foodPartnerModel.create({
+        const foodPartner = await FoodPartnerModel.create({
             name,
             email,
             password,
@@ -206,7 +207,7 @@ export const registerFoodPartner = async (req,res)=>{
         // Creating Token
         const token = jwt.sign({
             id: foodPartner._id,
-        }, process.env.JWT_SECRET)
+        }, Env.JWT_SECRET)
 
         // puting token in coookie
         res.cookie("token", token)
@@ -260,7 +261,7 @@ export const loginFoodPartner  = async (req, res)=> {
 
 
         // checking User exist or not 
-        const foodPartner = await foodPartnerModel.findOne({
+        const foodPartner = await FoodPartnerModel.findOne({
             email
         })
 
@@ -286,7 +287,7 @@ export const loginFoodPartner  = async (req, res)=> {
         // Creating token 
         const token = jwt.sign({
             id: foodPartner._id,
-        }, process.env.JWT_SECRET)
+        }, Env.JWT_SECRET)
 
         // Puting token in cookie
         res.cookie("token", token)

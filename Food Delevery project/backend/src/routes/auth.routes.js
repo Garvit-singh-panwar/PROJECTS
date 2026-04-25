@@ -15,5 +15,5 @@ authRouter.get("/user/logout",logoutUser);
 // Food partner routes
 authRouter.post("/foodPartner/register" , registerFoodPartner);
 authRouter.post("/foodPartner/login" , loginFoodPartner);
-authRouter.post("/foodPartner/logout", logoutFoodPartner);
+authRouter.get("/foodPartner/logout", logoutFoodPartner);
 export default authRouter;

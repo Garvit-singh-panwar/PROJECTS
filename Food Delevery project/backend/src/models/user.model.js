@@ -37,11 +37,11 @@ userSchema.methods.verifyPassword = async function (candidatePassword) {
 userSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) {
-        return next();
+        return ;
     }
 
     this.password = await hashPassword(this.password);
-    next();
+
 });
 
 const User = mongoose.model("User" , userSchema);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const foodPartnerSchema = new mongoose.Schema({
     name: {
@@ -43,14 +44,14 @@ foodPartnerSchema.methods.verifyPassword = async function (candidatePassword) {
 foodPartnerSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) {
-        return next();
+        return;
     }
 
     this.password = await hashPassword(this.password);
-    next();
+    
 });
 
 
-const foodPartnerModel = mongoose.model("foodpartner", foodPartnerSchema);
+const FoodPartnerModel = mongoose.model("FoodPartner", foodPartnerSchema);
 
-export default foodPartnerModel;
+export default FoodPartnerModel;
